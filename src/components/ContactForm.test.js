@@ -120,15 +120,42 @@ test('renders all firstName, lastName and email text when submitted. Does NOT re
     //assert
     const firstNameMessage = screen.getByText(/jabari/i);
     const lastNameMessage = screen.getByText(/brasher/i);
-    const emailMessage = screen.getByText(/ovenbakedgoods88@gmail.com/i)
+    const emailMessage = screen.getByText(/ovenbakedgoods88@gmail.com/i);
+    const messageMessage = screen.queryByText(/message:/i)
 
     expect(firstNameMessage).toBeInTheDocument();
     expect(lastNameMessage).toBeInTheDocument();
     expect(emailMessage).toBeInTheDocument();
+    expect(messageMessage).not.toBeInTheDocument();
     
 
 });
 
 test('renders all fields text when all fields are submitted.', async () => {
+    const screen = render(<ContactForm />);
+    //arrange
+    const firstNameInput = screen.getByLabelText(/first name/i);
+    const lastNameInput = screen.getByLabelText(/last name/i);
+    const emailInput = screen.getByLabelText(/email/i);
+    const messageInput = screen.getByLabelText(/message/i)
+    const submitButton = screen.getByRole('button', {name: /submit/i});
+
+    //act
+    userEvent.type(firstNameInput, "Jabari");
+    userEvent.type(lastNameInput, "Brasher");
+    userEvent.type(emailInput, "ovenbakedgoods88@gmail.com");
+    userEvent.type(messageInput, "dodo bird");
+    userEvent.click(submitButton);
+
+    //assert
+    const firstNameMessage = screen.getByText(/jabari/i);
+    const lastNameMessage = screen.getByText(/brasher/i);
+    const emailMessage = screen.getByText(/ovenbakedgoods88@gmail.com/i);
+    const messageMessage = screen.queryByText(/dodo bird/i)
+
+    expect(firstNameMessage).toBeInTheDocument();
+    expect(lastNameMessage).toBeInTheDocument();
+    expect(emailMessage).toBeInTheDocument();
+    expect(messageMessage).toBeInTheDocument();
     
 });
